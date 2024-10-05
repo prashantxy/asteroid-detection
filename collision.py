@@ -22,8 +22,8 @@ def preprocess_data(data):
     data['Diameter'] = data['Diameter'].str.extract('(\d+\.?\d*)')[0].astype(float)
 
     # Check if the 'rarity' column exists
-    if 'rarity' in data.columns:
-        data['is_hazardous'] = data['rarity'].apply(lambda x: 1 if 'hazardous' in x.lower() else 0)
+    if 'Rarity' in data.columns:
+        data['is_hazardous'] = data['Rarity'].apply(lambda x: 1 if 'hazardous' in x.lower() else 0)
     else:
         st.error("The 'rarity' column is missing from the dataset. Unable to proceed with hazardous classification.")
         st.stop()
