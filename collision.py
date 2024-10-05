@@ -26,20 +26,27 @@ def preprocess_data(data):
 
 # Train the Model
 def train_model(data):
-    X = data[['Diameter', 'V relative(km/s)', 'CA DistanceMinimum (au)']]  # Feature selection
-    y = data['is_hazardous']  # Target variable
+    try:
+        X = data[['Diameter', 'V relative(km/s)', 'CA DistanceMinimum (au)']]  # Feature selection
+        y = data['is_hazardous']  # Target variable
 
-    # Ensure there are samples from both classes
-    if y.nunique() < 2:
-        st.error("Not enough classes in the target variable for training.")
+        # Ensure there are samples from both classes
+        if y.nunique() < 2:
+            st.error("Not enough classes in the target variable for training.")
+            return None, None, None
+
+        st.write("Class distribution:", y.value_counts())  # Debug class distribution
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        model = LogisticRegression()
+        model.fit(X_train, y_train)
+
+        return model, X_test, y_test
+    except Exception as e:
+        st.error(f"An error occurred during model training: {e}")
         return None, None, None
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    model = LogisticRegression()
-    model.fit(X_train, y_train)
-
-    return model, X_test, y_test
 
 # Function to process the uploaded image and detect if it's an asteroid
 def classify_asteroid(image):
