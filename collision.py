@@ -10,7 +10,9 @@ from PIL import Image
 # Load Data
 @st.cache
 def load_data():
-    return pd.read_csv('NEO Earth Close Approaches.csv')
+    data = pd.read_csv('NEO Earth Close Approaches.csv')
+    st.write("Loaded Data Columns:", data.columns.tolist())  # Debug: Show column names
+    return data
 
 # Preprocessing
 def preprocess_data(data):
@@ -19,10 +21,15 @@ def preprocess_data(data):
     # Handling 'Diameter' to convert it to numerical values
     data['Diameter'] = data['Diameter'].str.extract('(\d+\.?\d*)')[0].astype(float)
 
-    # Convert a column to binary (0 or 1) based on a condition
-    data['is_hazardous'] = data['rarity'].apply(lambda x: 1 if 'hazardous' in x.lower() else 0)
+    # Check if the 'rarity' column exists
+    if 'rarity' in data.columns:
+        data['is_hazardous'] = data['rarity'].apply(lambda x: 1 if 'hazardous' in x.lower() else 0)
+    else:
+        st.error("The 'rarity' column is missing from the dataset. Unable to proceed with hazardous classification.")
+        st.stop()
 
     return data
+
 
 # Train the Model
 def train_model(data):
