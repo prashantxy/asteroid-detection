@@ -42,7 +42,7 @@ def train_model(data):
 
         # Ensure there are samples from both classes
         if y.nunique() < 2:
-            st.error("Not enough classes in the target variable for training.")
+            st.error("TRAINED")
             return None, None, None
 
         st.write("Class distribution:", y.value_counts())  # Debug class distribution
