@@ -15,20 +15,23 @@ def load_data():
     return data
 
 # Preprocessing
+# Preprocessing
 def preprocess_data(data):
     data = data.dropna()  # Drop missing values
 
     # Handling 'Diameter' to convert it to numerical values
     data['Diameter'] = data['Diameter'].str.extract('(\d+\.?\d*)')[0].astype(float)
 
-    # Check if the 'rarity' column exists
+    # Check if the 'Rarity' column exists
     if 'Rarity' in data.columns:
-        data['is_hazardous'] = data['Rarity'].apply(lambda x: 1 if 'hazardous' in x.lower() else 0)
+        # Handle NaN values and ensure the operation is performed only on strings
+        data['is_hazardous'] = data['Rarity'].apply(lambda x: 1 if isinstance(x, str) and 'hazardous' in x.lower() else 0)
     else:
-        st.error("The 'rarity' column is missing from the dataset. Unable to proceed with hazardous classification.")
+        st.error("The 'Rarity' column is missing from the dataset. Unable to proceed with hazardous classification.")
         st.stop()
 
     return data
+
 
 
 # Train the Model
