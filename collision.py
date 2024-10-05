@@ -10,7 +10,7 @@ from PIL import Image
 # Load Data
 @st.cache
 def load_data():
-    return pd.read_csv('C:\\Users\\pdube\\OneDrive\\Desktop\\NASA\\main.js\\test2\\NEO Earth Close Approaches.csv')
+    return pd.read_csv('NEO Earth Close Approaches.csv')
 
 # Preprocessing
 def preprocess_data(data):
